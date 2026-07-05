@@ -1,0 +1,98 @@
+{
+  "name": "Vibe Coding Devcontainer",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "features": {
+    "ghcr.io/devcontainers-extra/features/bash-command:1": {
+      "command": "sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list.d/debian.sources"
+    },
+    "ghcr.io/devcontainers/features/node:2": {
+      "version": "24"
+    },
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1.10.0": {
+      "moby": false,
+      "version": "latest",
+      "dockerDashComposeVersion": "v2",
+      "installDockerBuildx": true
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/go:1": {
+      "version": "1.26"
+    }
+  },
+  "overrideFeatureInstallOrder": [
+    "ghcr.io/devcontainers-extra/features/bash-command:1",
+    "ghcr.io/devcontainers/features/node:2",
+    "ghcr.io/devcontainers/features/go:1",
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1.10.0",
+    "ghcr.io/devcontainers/features/github-cli:1"
+  ],
+  "containerEnv": {
+    "GOPROXY": "https://goproxy.cn,direct",
+    "npm_config_registry": "https://registry.npmmirror.com",
+    "PIP_INDEX_URL": "https://mirrors.aliyun.com/pypi/simple",
+    "COREPACK_ENABLE_DOWNLOAD_PROMPT": "0",
+    "INSTALL_PLAYWRIGHT": "1",
+    "PLAYWRIGHT_BROWSERS": "chromium",
+    "INSTALL_CLAUDE_CODE": "1",
+    "INSTALL_CODEX": "1"
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "waitFor": "postCreateCommand",
+  "remoteUser": "vscode",
+  "init": true,
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "github.vscode-github-actions",
+        "github.vscode-pull-request-github",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "christian-kohler.npm-intellisense",
+        "christian-kohler.path-intellisense",
+        "ms-python.python",
+        "ms-python.debugpy",
+        "ms-playwright.playwright",
+        "bierner.markdown-mermaid",
+        "tamasfe.even-better-toml"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "[javascript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[typescript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[javascriptreact]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[typescriptreact]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[json]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[jsonc]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[markdown]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        }
+      }
+    }
+  },
+  "mounts": [
+    "source=claude-code-data,target=/home/vscode/.claude,type=volume",
+    "source=${localEnv:HOME}/.claude/.credentials.json,target=/home/vscode/.claude/.credentials.json,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.claude.json,target=/home/vscode/.claude.json,type=bind,consistency=cached",
+    "source=codex-data,target=/home/vscode/.codex,type=volume",
+    "source=${localEnv:HOME}/.codex/auth.json,target=/home/vscode/.codex/auth.json,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.config/gh,target=/home/vscode/.config/gh,type=bind,consistency=cached"
+  ]
+}
